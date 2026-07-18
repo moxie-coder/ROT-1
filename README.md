@@ -1,5 +1,7 @@
 # ROT-1 Extended — MIDI Corruptor
 
+An expanded fork of the original ROT-1 MIDI Corruptor with additional controls, improved visualization, and quality-of-life features.
+
 **Format-aware byte rot for Standard MIDI Files. Headers stay valid, the music doesn't.**
 
 Drop in a `.mid` file, push the faders, and listen to it fall apart — then download the wreckage and open it in any DAW. Everything runs client-side in your browser; nothing is uploaded anywhere.
@@ -18,6 +20,14 @@ Randomly flipping bytes in a MIDI file almost never produces glitchy music — i
 
 ROT-1 Extended instead fully parses the file (VLQs, running status, meta and sysex events included), mutates only the musical payload, and re-serializes with correct headers, lengths, and delta times. The output is a 100% valid SMF that any sequencer will open — it just sounds wrong in exactly the way you dialed in.
 
+## Why this fork?
+
+ROT-1 Extended began as a fork of the original browser MIDI corruptor.
+
+The original project demonstrated format-aware MIDI corruption extremely well, but intentionally kept the interface simple. This fork expands on that idea with additional controls, visualization improvements, reproducible seeded corruption, quality-of-life features, and an interface designed for experimentation.
+
+The goal isn't realism—it's making controlled musical destruction fun.
+
 ## The corruption bank
 
 | Fader | What it rots |
@@ -29,22 +39,51 @@ ROT-1 Extended instead fully parses the file (VLQs, running status, meta and sys
 | **Instrument roulette** | Rerolls GM program changes — injects them on tracks that never had any |
 | **Tempo warp** | Bends existing tempo events and injects random BPM lurches at high settings |
 
-All corruption is **seeded**: the same seed + fader positions always produce the same result. Hit *Re-roll seed* for a fresh disaster with identical settings.
+All corruption is **seeded**: the same seed and parameter values always produce the exact same corrupted MIDI.
+
+You can:
+
+- Re-roll the seed while keeping all parameters.
+- Randomize any individual fader with its 🎲 button.
+- Reset every parameter back to zero at any time.
+
+This makes it easy to experiment while still being able to reproduce interesting results.
 
 Note-offs follow their note-ons through pitch changes and deletions, so corrupted files never have stuck notes.
 
 ## Features
 
-- **Decay overlay** — piano roll showing original notes as amber ghosts with the corrupted state burning on top, so you can see exactly what moved, mutated, or died
-- **Rot log** — every individual mutation reported (`note E4 → G#7`, `120 → 832 BPM`)
-- **A/B playback** — built-in Web Audio synth to compare original vs. corrupted, including tempo-warp time stretching
-- **Valid output** — download as `.rot.mid`, verified against an independent parser ([@tonejs/midi](https://github.com/Tonejs/Midi))
-- **Demo loop included** — try it without hunting for a MIDI file
-- **Zero dependencies, zero backend** — one HTML file, works offline
+- Format-aware MIDI corruption engine
+- Live piano-roll visualization
+- Built-in Web Audio preview
+- Original vs corrupted A/B playback
+- Download valid Standard MIDI Files
+- Per-fader randomization (🎲)
+- Seeded, deterministic corruption
+- One-click seed reroll
+- Detailed mutation log
+- Demo MIDI included
+- Completely offline
+- Single HTML file
+- No dependencies
+
+## Planned Features
+
+- Corruption presets
+- Favorite seeds
+- Seed history
+- Randomize all parameters
+- Shareable corruption settings
+- Additional corruption algorithms
+- More visualization improvements
 
 ## Usage
 
-Open the [live demo](https://YOURUSER.github.io/midi-corruptor/), or clone and open locally:
+No installation is required.
+
+Simply visit the GitHub Pages build, or download the single `index.html` file and open it locally in any modern browser.
+
+Because the entire application is self-contained, it also works completely offline.
 
 ```bash
 git clone https://github.com/YOURUSER/midi-corruptor.git
