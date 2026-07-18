@@ -1,4 +1,4 @@
-# ROT-1 — MIDI Corruptor
+# ROT-1 Extended — MIDI Corruptor
 
 **Format-aware byte rot for Standard MIDI Files. Headers stay valid, the music doesn't.**
 
@@ -6,7 +6,7 @@ Drop in a `.mid` file, push the faders, and listen to it fall apart — then dow
 
 **▶ Live demo:** https://moxie-coder.github.io/ROT-1/
 
-![ROT-1 screenshot](https://i.imgur.com/kZL91Q4.png)
+![ROT-1 Extended screenshot](https://i.imgur.com/kZL91Q4.png)
 
 ## Why "format-aware"?
 
@@ -16,7 +16,7 @@ Randomly flipping bytes in a MIDI file almost never produces glitchy music — i
 - **Running status.** Files omit repeated status bytes, so corrupting one status byte misinterprets everything after it.
 - **Track length headers.** `MTrk` chunks declare their byte length up front; insertions and deletions break parsing immediately.
 
-ROT-1 instead fully parses the file (VLQs, running status, meta and sysex events included), mutates only the musical payload, and re-serializes with correct headers, lengths, and delta times. The output is a 100% valid SMF that any sequencer will open — it just sounds wrong in exactly the way you dialed in.
+ROT-1 Extended instead fully parses the file (VLQs, running status, meta and sysex events included), mutates only the musical payload, and re-serializes with correct headers, lengths, and delta times. The output is a 100% valid SMF that any sequencer will open — it just sounds wrong in exactly the way you dialed in.
 
 ## The corruption bank
 
