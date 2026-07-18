@@ -6,7 +6,7 @@ Drop in a `.mid` file, push the faders, and listen to it fall apart — then dow
 
 **▶ Live demo:** https://moxie-coder.github.io/ROT-1/
 
-![ROT-1 screenshot](screenshot.png)
+![ROT-1 screenshot](https://i.imgur.com/kZL91Q4.png)
 
 ## Why "format-aware"?
 
