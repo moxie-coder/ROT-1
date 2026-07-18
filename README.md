@@ -4,7 +4,7 @@
 
 Drop in a `.mid` file, push the faders, and listen to it fall apart — then download the wreckage and open it in any DAW. Everything runs client-side in your browser; nothing is uploaded anywhere.
 
-**▶ Live demo:** https://randomtypek.github.io/ROT-1/
+**▶ Live demo:** https://moxie-coder.github.io/ROT-1/
 
 ![ROT-1 screenshot](screenshot.png)
 

@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ROT-1 — MIDI Corruptor</title>
+<title>ROT-1 Extended — MIDI Corruptor</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Unica+One&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
@@ -142,7 +142,7 @@ footer{margin-top:14px;text-align:center;font-size:10.5px;color:var(--dim);lette
 
 <header>
   <div class="brand">
-    <h1>ROT<span class="rot">-1</span> MIDI CORRUPTOR</h1>
+    <h1>ROT<span class="rot">-1</span> Extended MIDI CORRUPTOR</h1>
     <div class="tagline">format-aware byte rot</div>
   </div>
   <div class="seedbox">
@@ -199,6 +199,7 @@ footer{margin-top:14px;text-align:center;font-size:10.5px;color:var(--dim);lette
         <h2>Corruption bank</h2>
         <div class="actions">
           <button id="reroll" class="hot" disabled>&#8635; Re-roll seed</button>
+		  <button id="chaos" class="hot">🎲 Chaos!</button>
           <button id="reset" disabled>Zero all</button>
         </div>
       </div>
@@ -212,7 +213,7 @@ footer{margin-top:14px;text-align:center;font-size:10.5px;color:var(--dim);lette
   <div id="log"><span class="empty">Load a file and push a fader. Every mutation gets reported here.</span></div>
 </section>
 
-<footer>ROT-1 · runs entirely in your browser · nothing is uploaded anywhere · <a href="https://github.com/RandomTypek/ROT-1" target="_blank" rel="noopener">source on GitHub</a></footer>
+<footer>ROT-1 Extended · runs entirely in your browser · nothing is uploaded anywhere · <a href="https://github.com/moxie-coder/ROT-1" target="_blank" rel="noopener">source on GitHub</a></footer>
 
 <script>
 'use strict';
@@ -531,9 +532,11 @@ const fadersEl=$('faders');
 for(const f of FADERS){
   const row=document.createElement('div');
   row.className='fader';
-  row.innerHTML='<label for="f_'+f.id+'">'+f.label+'<span class="sub">'+f.sub+'</span></label>'+
-    '<input type="range" id="f_'+f.id+'" min="0" max="100" value="0" step="1" aria-label="'+f.label+'">'+
-    '<output id="o_'+f.id+'">0</output>';
+  row.innerHTML =
+  '<label for="f_'+f.id+'">'+f.label+'<span class="sub">'+f.sub+'</span></label>'+
+  '<input type="range" id="f_'+f.id+'" min="0" max="100" value="0" step="1" aria-label="'+f.label+'">'+
+  '<output id="o_'+f.id+'">0</output>'+
+  '<button class="rnd" data-id="'+f.id+'" title="Randomize this parameter">🎲</button>';
   fadersEl.appendChild(row);
 }
 let debounceTimer=null;
@@ -634,6 +637,22 @@ function renderLog(){
     '<div'+(t==='drop'?' class="drop-line"':'')+'><span class="t '+t+'">['+t.toUpperCase()+']</span> '+msg+'</div>'
   ).join('');
   el.scrollTop=0;
+}
+
+function randomizeFader(id) {
+  const val = Math.floor(Math.random() * 101);
+  // bias toward more interesting values for certain params
+  const biased = ['pitch','smear','drop','tempo'].includes(id) ? 
+    Math.floor(Math.random() * 65) + 35 : val;
+  $(`f_${id}`).value = biased;
+  $(`o_${id}`).textContent = biased;
+}
+
+function chaosAll() {
+  for(const f of FADERS) {
+    randomizeFader(f.id);
+  }
+  applyCorruption();
 }
 
 /* ---------- piano roll ---------- */
@@ -829,6 +848,15 @@ $('download').addEventListener('click',()=>{
   a.download=fileName.replace(/\.midi?$/i,'')+'.rot.mid';
   document.body.appendChild(a);a.click();a.remove();
   setTimeout(()=>URL.revokeObjectURL(a.href),2000);
+});
+$('chaos').addEventListener('click',()=>{
+	chaosAll();
+});
+fadersEl.addEventListener('click', (e) => {
+  if (!e.target.classList.contains('rnd')) return;
+
+  randomizeFader(e.target.dataset.id);
+  applyCorruption();
 });
 </script>
 </body>
